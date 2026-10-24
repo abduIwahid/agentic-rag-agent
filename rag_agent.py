@@ -33,10 +33,15 @@ Enter your Google API key below to get started!
 st.subheader("🔑 API Keys")
 col1, col2 = st.columns(2)
 with col1:
+    _secret_key = ""
+    try:
+        _secret_key = st.secrets.get("GOOGLE_API_KEY", "")
+    except Exception:
+        _secret_key = ""
     google_key = st.text_input(
         "Google API Key", 
         type="password",
-        value=os.getenv("GOOGLE_API_KEY", ""),
+        value=_secret_key or os.getenv("GOOGLE_API_KEY", ""),
         help="Get your key from https://aistudio.google.com/apikey"
     )
 
@@ -69,7 +74,7 @@ if google_key:
         """Create an agent with reasoning capabilities"""
         return Agent(
             model=Gemini(
-                id="gemini-2.5-flash", 
+                id="gemini-3.8-flash", 
                 api_key=google_key
             ),
             knowledge=_kb,
